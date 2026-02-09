@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page des Notes - Lecteurs Juniors</title>
+    <style>
+        /* ===== STYLES DE BASE ===== */
+        :root {
+            --primary: #4361ee;
+            --primary-light: #e0e7ff;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --border: #dee2e6;
+            --radius: 12px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ===== NAVIGATION ===== */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--primary);
+        }
+
+        .nav-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .nav-title h2 {
+            color: var(--secondary);
+            font-size: 1.2rem;
+            margin: 0;
+        }
+
+        .nav-title p {
+            color: var(--gray);
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.25);
+        }
+
+        /* ===== CONTENU PRINCIPAL ===== */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .page-header h1 {
+            color: var(--secondary);
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .page-header h1 i {
+            color: var(--primary);
+        }
+
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border-top: 5px solid var(--primary);
+        }
+
+        .stat-card h3 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stat-values {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            padding: 10px;
+            border-radius: 8px;
+            background: var(--light);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .stat-number {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        /* ===== TABLEAUX DES NOTES ===== */
+        .grades-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .grade-section {
+            background: white;
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .grade-section:hover {
+            border-color: var(--primary-light);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .grade-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .grade-title {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .btn-add-row {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .notes-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .notes-table th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        .notes-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        .notes-table tr:hover {
+            background: var(--light);
+        }
+
+        .notes-table input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .notes-table input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .name-cell {
+            min-width: 200px;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .notes-subheader {
+            background: var(--primary-light) !important;
+            color: var(--primary) !important;
+            font-weight: 600;
+        }
+
+        .notes-subheader th {
+            background: var(--primary-light) !important;
+            color: var(--primary) !important;
+            text-align: center;
+        }
+
+        /* ===== STATISTIQUES PAR GRADE ===== */
+        .grade-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .grade-stat {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .grade-stat h4 {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .stat-high {
+            color: var(--success) !important;
+            font-weight: 700;
+        }
+
+        .stat-low {
+            color: var(--danger) !important;
+            font-weight: 700;
+        }
+
+        .stat-average {
+            color: var(--primary) !important;
+            font-weight: 700;
+        }
+
+        /* ===== BOUTONS D'ACTION ===== */
+        .actions-footer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border);
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, var(--danger), #b5179e);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(247, 37, 133, 0.3);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, var(--warning), #f9c74f);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(248, 150, 30, 0.3);
+        }
+
+        /* ===== MODALS ===== */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .modal-content h2 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1200px) {
+            .main-content {
+                padding: 20px;
+            }
+            
+            .notes-table {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .stats-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .grade-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .notes-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .actions-footer {
+                flex-direction: column;
+            }
+
+            .btn-reset, .btn-download {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .grade-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+
+            .btn-add-row {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 15px;
+            }
+
+            .grade-section {
+                padding: 20px;
+            }
+
+            .notes-table th,
+            .notes-table td {
+                padding: 10px 8px;
+            }
+
+            .stat-values {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+
+        /* Scrollbar personnalisée */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .grade-section {
+            animation: fadeIn 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="nav-logo">
+                <!-- Votre logo ici -->
+                <img src="image.jpeg" alt="Logo Paroisse">
+            </div>
+            <div class="nav-title">
+                <h2>Lecteurs Juniors</h2>
+                <p>St François d'Assise Fidjrossè - Système de Notes</p>
+            </div>
+        </div>
+        <button class="btn-primary" onclick="window.location.href='index.html'">
+            <i class="fas fa-arrow-left"></i> Retour au tableau de bord
+        </button>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="main-content">
+        <!-- En-tête -->
+        <div class="page-header">
+            <h1><i class="fas fa-chart-line"></i> Système de Notation des Lecteurs</h1>
+            <button class="btn-primary" onclick="exportToExcel()">
+                <i class="fas fa-file-excel"></i> Exporter Excel
+            </button>
+        </div>
+
+        <!-- Statistiques globales -->
+        <div class="stats-summary" id="global-stats">
+            <!-- Les statistiques seront calculées dynamiquement -->
+        </div>
+
+        <!-- Conteneur des grades -->
+        <div class="grades-container" id="grades-container">
+            <!-- Les 5 grades seront générés dynamiquement -->
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="actions-footer">
+            <button class="btn-reset" onclick="showResetModal()">
+                <i class="fas fa-redo"></i> Réinitialiser tous les tableaux
+            </button>
+            <button class="btn-download" onclick="generatePDF()">
+                <i class="fas fa-download"></i> Télécharger tous les tableaux (PDF)
+            </button>
+        </div>
+    </main>
+
+    <!-- Modal de réinitialisation -->
+    <div id="reset-modal" class="modal">
+        <div class="modal-content">
+            <h2><i class="fas fa-exclamation-triangle"></i> Réinitialisation</h2>
+            <p>Êtes-vous sûr de vouloir réinitialiser tous les tableaux de notes ?</p>
+            <p><strong>Toutes les données seront perdues !</strong></p>
+            <div class="modal-actions">
+                <button class="btn-reset" onclick="resetAllTables()">Oui, Réinitialiser</button>
+                <button class="btn-primary" onclick="hideResetModal()">Non, Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    
+    <script>
+        // ===== CONFIGURATION =====
+        const GRADES = [
+            { id: 'postulat', name: 'Postulat', color: '#4361ee' },
+            { id: 'noviciat', name: 'Noviciat', color: '#3a0ca3' },
+            { id: 'lectorat1', name: 'Lectorat 1', color: '#4cc9f0' },
+            { id: 'lectorat2', name: 'Lectorat 2', color: '#f72585' },
+            { id: 'animation1', name: 'Animation 1', color: '#f8961e' }
+        ];
+
+        const NOTE_TYPES = [
+            { id: 'paroissiale', name: 'Notes Paroissiale', short: 'Paro.' },
+            { id: 'vicariale', name: 'Notes Vicariale', short: 'Vicar.' },
+            { id: 'diocesaine', name: 'Notes Diocésaine', short: 'Dioc.' }
+        ];
+
+        const STORAGE_KEY = 'lecteurs_notes_data';
+
+        // ===== DONNÉES =====
+        let notesData = {
+            postulat: [],
+            noviciat: [],
+            lectorat1: [],
+            lectorat2: [],
+            animation1: []
+        };
+
+        // ===== INITIALISATION =====
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            initializeTables();
+            calculateGlobalStats();
+        });
+
+        function loadData() {
+            const savedData = localStorage.getItem(STORAGE_KEY);
+            if (savedData) {
+                try {
+                    notesData = JSON.parse(savedData);
+                } catch (e) {
+                    console.error('Erreur de chargement:', e);
+                    initializeDefaultData();
+                }
+            } else {
+                initializeDefaultData();
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(notesData));
+            calculateGlobalStats();
+        }
+
+        function initializeDefaultData() {
+            GRADES.forEach(grade => {
+                notesData[grade.id] = [
+                    { id: Date.now() + 1, nom: '', paroissiale: '', vicariale: '', diocesaine: '' },
+                    { id: Date.now() + 2, nom: '', paroissiale: '', vicariale: '', diocesaine: '' },
+                    { id: Date.now() + 3, nom: '', paroissiale: '', vicariale: '', diocesaine: '' }
+                ];
+            });
+            saveData();
+        }
+
+        // ===== INITIALISATION DES TABLEAUX =====
+        function initializeTables() {
+            const container = document.getElementById('grades-container');
+            container.innerHTML = '';
+
+            GRADES.forEach(grade => {
+                const gradeSection = createGradeSection(grade);
+                container.appendChild(gradeSection);
+            });
+        }
+
+        function createGradeSection(grade) {
+            const section = document.createElement('div');
+            section.className = 'grade-section';
+            section.style.borderTopColor = grade.color;
+
+            // En-tête du grade
+            const header = document.createElement('div');
+            header.className = 'grade-header';
+            header.innerHTML = `
+                <div class="grade-title">${grade.name}</div>
+                <button class="btn-add-row" onclick="addRow('${grade.id}')" style="background: ${grade.color}">
+                    <i class="fas fa-plus"></i> Ajouter une ligne
+                </button>
+            `;
+
+            // Tableau des notes
+            const table = createNotesTable(grade.id);
+
+            // Statistiques du grade
+            const stats = createGradeStats(grade.id);
+
+            section.appendChild(header);
+            section.appendChild(table);
+            section.appendChild(stats);
+
+            return section;
+        }
+
+        function createNotesTable(gradeId) {
+            const table = document.createElement('table');
+            table.className = 'notes-table';
+
+            // En-tête principal
+            const thead = document.createElement('thead');
+            thead.innerHTML = `
+                <tr>
+                    <th rowspan="2" style="width: 30%;">Nom et Prénom</th>
+                    <th colspan="3">NOTES</th>
+                </tr>
+                <tr class="notes-subheader">
+                    <th>Paroissiale (20)</th>
+                    <th>Vicariale (20)</th>
+                    <th>Diocésaine (20)</th>
+                </tr>
+            `;
+
+            // Corps du tableau
+            const tbody = document.createElement('tbody');
+            tbody.id = `tbody-${gradeId}`;
+
+            // Remplir avec les données existantes
+            notesData[gradeId].forEach((row, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="name-cell">
+                        <input type="text" 
+                               value="${row.nom || ''}" 
+                               oninput="updateNote('${gradeId}', ${index}, 'nom', this.value)"
+                               placeholder="Nom et prénom">
+                    </td>
+                    <td>
+                        <input type="number" 
+                               min="0" 
+                               max="20" 
+                               step="0.5"
+                               value="${row.paroissiale || ''}" 
+                               oninput="updateNote('${gradeId}', ${index}, 'paroissiale', this.value)">
+                    </td>
+                    <td>
+                        <input type="number" 
+                               min="0" 
+                               max="20" 
+                               step="0.5"
+                               value="${row.vicariale || ''}" 
+                               oninput="updateNote('${gradeId}', ${index}, 'vicariale', this.value)">
+                    </td>
+                    <td>
+                        <input type="number" 
+                               min="0" 
+                               max="20" 
+                               step="0.5"
+                               value="${row.diocesaine || ''}" 
+                               oninput="updateNote('${gradeId}', ${index}, 'diocesaine', this.value)">
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            table.appendChild(thead);
+            table.appendChild(tbody);
+
+            return table;
+        }
+
+        function createGradeStats(gradeId) {
+            const statsDiv = document.createElement('div');
+            statsDiv.className = 'grade-stats';
+            statsDiv.id = `stats-${gradeId}`;
+
+            // Mettre à jour les statistiques
+            updateGradeStats(gradeId, statsDiv);
+
+            return statsDiv;
+        }
+
+        // ===== GESTION DES DONNÉES =====
+        function updateNote(gradeId, rowIndex, field, value) {
+            if (!notesData[gradeId][rowIndex]) return;
+            
+            notesData[gradeId][rowIndex][field] = value;
+            saveData();
+            
+            // Mettre à jour les statistiques de ce grade
+            const statsDiv = document.getElementById(`stats-${gradeId}`);
+            if (statsDiv) updateGradeStats(gradeId, statsDiv);
+        }
+
+        function addRow(gradeId) {
+            const newRow = {
+                id: Date.now(),
+                nom: '',
+                paroissiale: '',
+                vicariale: '',
+                diocesaine: ''
+            };
+            
+            notesData[gradeId].push(newRow);
+            
+            // Ajouter la ligne au tableau
+            const tbody = document.getElementById(`tbody-${gradeId}`);
+            const tr = document.createElement('tr');
+            const rowIndex = notesData[gradeId].length - 1;
+            
+            tr.innerHTML = `
+                <td class="name-cell">
+                    <input type="text" 
+                           value="" 
+                           oninput="updateNote('${gradeId}', ${rowIndex}, 'nom', this.value)"
+                           placeholder="Nom et prénom">
+                </td>
+                <td>
+                    <input type="number" 
+                           min="0" 
+                           max="20" 
+                           step="0.5"
+                           value="" 
+                           oninput="updateNote('${gradeId}', ${rowIndex}, 'paroissiale', this.value)">
+                </td>
+                <td>
+                    <input type="number" 
+                           min="0" 
+                           max="20" 
+                           step="0.5"
+                           value="" 
+                           oninput="updateNote('${gradeId}', ${rowIndex}, 'vicariale', this.value)">
+                </td>
+                <td>
+                    <input type="number" 
+                           min="0" 
+                           max="20" 
+                           step="0.5"
+                           value="" 
+                           oninput="updateNote('${gradeId}', ${rowIndex}, 'diocesaine', this.value)">
+                </td>
+            `;
+            
+            tbody.appendChild(tr);
+            saveData();
+            
+            // Mettre à jour les statistiques
+            const statsDiv = document.getElementById(`stats-${gradeId}`);
+            if (statsDiv) updateGradeStats(gradeId, statsDiv);
+        }
+
+        // ===== CALCUL DES STATISTIQUES =====
+        function calculateGlobalStats() {
+            const statsDiv = document.getElementById('global-stats');
+            if (!statsDiv) return;
+
+            let totalNotes = { paroissiale: 0, vicariale: 0, diocesaine: 0 };
+            let countNotes = { paroissiale: 0, vicariale: 0, diocesaine: 0 };
+            let maxNotes = { paroissiale: 0, vicariale: 0, diocesaine: 0 };
+            let minNotes = { paroissiale: 20, vicariale: 20, diocesaine: 20 };
+
+            // Calculer les statistiques globales
+            GRADES.forEach(grade => {
+                notesData[grade.id].forEach(row => {
+                    NOTE_TYPES.forEach(type => {
+                        const note = parseFloat(row[type.id]);
+                        if (!isNaN(note) && note >= 0 && note <= 20) {
+                            totalNotes[type.id] += note;
+                            countNotes[type.id]++;
+                            maxNotes[type.id] = Math.max(maxNotes[type.id], note);
+                            minNotes[type.id] = Math.min(minNotes[type.id], note);
+                        }
+                    });
+                });
+            });
+
+            // Générer l'affichage
+            statsDiv.innerHTML = `
+                ${NOTE_TYPES.map(type => {
+                    const moyenne = countNotes[type.id] > 0 
+                        ? (totalNotes[type.id] / countNotes[type.id]).toFixed(2)
+                        : '0.00';
+                    
+                    return `
+                        <div class="stat-card">
+                            <h3><i class="fas fa-chart-bar"></i> ${type.name}</h3>
+                            <div class="stat-values">
+                                <div class="stat-value">
+                                    <div class="stat-label">Plus forte</div>
+                                    <div class="stat-number stat-high">${maxNotes[type.id].toFixed(1)}</div>
+                                </div>
+                                <div class="stat-value">
+                                    <div class="stat-label">Plus faible</div>
+                                    <div class="stat-number stat-low">${minNotes[type.id].toFixed(1)}</div>
+                                </div>
+                                <div class="stat-value">
+                                    <div class="stat-label">Moyenne</div>
+                                    <div class="stat-number stat-average">${moyenne}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            `;
+        }
+
+        function updateGradeStats(gradeId, statsDiv) {
+            const gradeData = notesData[gradeId];
+            
+            const stats = {
+                paroissiale: { values: [], max: 0, min: 20, sum: 0, count: 0 },
+                vicariale: { values: [], max: 0, min: 20, sum: 0, count: 0 },
+                diocesaine: { values: [], max: 0, min: 20, sum: 0, count: 0 }
+            };
+
+            // Collecter les données
+            gradeData.forEach(row => {
+                NOTE_TYPES.forEach(type => {
+                    const note = parseFloat(row[type.id]);
+                    if (!isNaN(note) && note >= 0 && note <= 20) {
+                        stats[type.id].values.push(note);
+                        stats[type.id].max = Math.max(stats[type.id].max, note);
+                        stats[type.id].min = Math.min(stats[type.id].min, note);
+                        stats[type.id].sum += note;
+                        stats[type.id].count++;
+                    }
+                });
+            });
+
+            // Générer l'affichage
+            statsDiv.innerHTML = NOTE_TYPES.map(type => {
+                const typeStats = stats[type.id];
+                const moyenne = typeStats.count > 0 
+                    ? (typeStats.sum / typeStats.count).toFixed(2)
+                    : '0.00';
+                
+                return `
+                    <div class="grade-stat">
+                        <h4>${type.short}</h4>
+                        <div style="font-size: 1.2rem; margin-bottom: 5px;">
+                            <span class="stat-high">${typeStats.max.toFixed(1)}</span> / 
+                            <span class="stat-low">${typeStats.min.toFixed(1)}</span>
+                        </div>
+                        <div style="font-size: 0.9rem; color: var(--gray);">
+                            Moyenne: <span class="stat-average">${moyenne}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Mettre à jour les statistiques globales
+            calculateGlobalStats();
+        }
+
+        // ===== RÉINITIALISATION =====
+        function showResetModal() {
+            document.getElementById('reset-modal').classList.add('active');
+        }
+
+        function hideResetModal() {
+            document.getElementById('reset-modal').classList.remove('active');
+        }
+
+        function resetAllTables() {
+            initializeDefaultData();
+            initializeTables();
+            hideResetModal();
+            showNotification('Tous les tableaux ont été réinitialisés');
+        }
+
+        // ===== EXPORT PDF =====
+        function generatePDF() {
+            if (typeof window.jspdf === 'undefined') {
+                showNotification('Erreur: Bibliothèque PDF non chargée', 'error');
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Titre principal
+            doc.setFontSize(20);
+            doc.setTextColor(67, 97, 238);
+            doc.text('Système de Notation - Lecteurs Juniors', 105, 20, { align: 'center' });
+            
+            doc.setFontSize(14);
+            doc.setTextColor(58, 12, 163);
+            doc.text('Paroisse Saint François d\'Assise Fidjrossè', 105, 30, { align: 'center' });
+            
+            doc.setFontSize(12);
+            doc.setTextColor(100, 100, 100);
+            doc.text(`Document généré le ${formatDate(new Date())}`, 105, 40, { align: 'center' });
+
+            let startY = 50;
+
+            // Générer un tableau par grade
+            GRADES.forEach((grade, gradeIndex) => {
+                if (gradeIndex > 0) {
+                    doc.addPage();
+                    startY = 20;
+                }
+
+                // Titre du grade
+                doc.setFontSize(16);
+                doc.setTextColor(67, 97, 238);
+                doc.text(`GRADE: ${grade.name}`, 14, startY);
+                
+                // Préparer les données
+                const headers = [
+                    'Nom et Prénom', 
+                    'Notes Paroissiale (20)', 
+                    'Notes Vicariale (20)', 
+                    'Notes Diocésaine (20)'
+                ];
+                
+                const data = notesData[grade.id]
+                    .filter(row => row.nom.trim() !== '')
+                    .map(row => [
+                        row.nom || '',
+                        row.paroissiale || '-',
+                        row.vicariale || '-',
+                        row.diocesaine || '-'
+                    ]);
+
+                // Statistiques
+                const stats = calculateGradeStatsForPDF(grade.id);
+                const statsText = [
+                    `Paroissiale: Max ${stats.paroissiale.max.toFixed(1)}, Min ${stats.paroissiale.min.toFixed(1)}, Moy ${stats.paroissiale.moyenne.toFixed(2)}`,
+                    `Vicariale: Max ${stats.vicariale.max.toFixed(1)}, Min ${stats.vicariale.min.toFixed(1)}, Moy ${stats.vicariale.moyenne.toFixed(2)}`,
+                    `Diocésaine: Max ${stats.diocesaine.max.toFixed(1)}, Min ${stats.diocesaine.min.toFixed(1)}, Moy ${stats.diocesaine.moyenne.toFixed(2)}`
+                ];
+
+                doc.setFontSize(10);
+                doc.setTextColor(100, 100, 100);
+                statsText.forEach((text, i) => {
+                    doc.text(text, 14, startY + 10 + (i * 5));
+                });
+
+                // Tableau des notes
+                if (data.length > 0) {
+                    doc.autoTable({
+                        startY: startY + 30,
+                        head: [headers],
+                        body: data,
+                        theme: 'grid',
+                        headStyles: { 
+                            fillColor: [67, 97, 238],
+                            textColor: 255,
+                            fontStyle: 'bold'
+                        },
+                        margin: { left: 14, right: 14 },
+                        styles: { fontSize: 9 },
+                        headStyles: { fontSize: 10 }
+                    });
+                } else {
+                    doc.setFontSize(12);
+                    doc.setTextColor(150, 150, 150);
+                    doc.text('Aucune donnée enregistrée', 105, startY + 40, { align: 'center' });
+                }
+            });
+
+            // Ajouter la pagination
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(10);
+                doc.setTextColor(150, 150, 150);
+                doc.text(`Page ${i}/${pageCount}`, 105, doc.internal.pageSize.height - 10, { align: 'center' });
+            }
+
+            // Télécharger
+            const filename = `Notes_Lecteurs_Juniors_${new Date().toISOString().split('T')[0]}.pdf`;
+            doc.save(filename);
+            showNotification('PDF téléchargé avec succès');
+        }
+
+        function calculateGradeStatsForPDF(gradeId) {
+            const gradeData = notesData[gradeId];
+            
+            const stats = {
+                paroissiale: { values: [], max: 0, min: 20, sum: 0, count: 0, moyenne: 0 },
+                vicariale: { values: [], max: 0, min: 20, sum: 0, count: 0, moyenne: 0 },
+                diocesaine: { values: [], max: 0, min: 20, sum: 0, count: 0, moyenne: 0 }
+            };
+
+            // Collecter les données
+            gradeData.forEach(row => {
+                NOTE_TYPES.forEach(type => {
+                    const note = parseFloat(row[type.id]);
+                    if (!isNaN(note) && note >= 0 && note <= 20) {
+                        stats[type.id].values.push(note);
+                        stats[type.id].max = Math.max(stats[type.id].max, note);
+                        stats[type.id].min = Math.min(stats[type.id].min, note);
+                        stats[type.id].sum += note;
+                        stats[type.id].count++;
+                    }
+                });
+            });
+
+            // Calculer les moyennes
+            NOTE_TYPES.forEach(type => {
+                stats[type.id].moyenne = stats[type.id].count > 0 
+                    ? stats[type.id].sum / stats[type.id].count
+                    : 0;
+            });
+
+            return stats;
+        }
+
+        // ===== EXPORT EXCEL =====
+        function exportToExcel() {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            
+            // En-tête
+            csvContent += "Système de Notation - Lecteurs Juniors\n";
+            csvContent += "Paroisse Saint François d'Assise Fidjrossè\n";
+            csvContent += `Exporté le ${formatDate(new Date())}\n\n`;
+
+            // Données par grade
+            GRADES.forEach(grade => {
+                csvContent += `GRADE: ${grade.name}\n`;
+                csvContent += "Nom et Prénom,Notes Paroissiale (20),Notes Vicariale (20),Notes Diocésaine (20)\n";
+                
+                notesData[grade.id].forEach(row => {
+                    if (row.nom.trim() !== '') {
+                        csvContent += `${row.nom || ''},${row.paroissiale || ''},${row.vicariale || ''},${row.diocesaine || ''}\n`;
+                    }
+                });
+                
+                // Statistiques
+                const stats = calculateGradeStatsForPDF(grade.id);
+                csvContent += `\nStatistiques:\n`;
+                csvContent += `Paroissiale: Max ${stats.paroissiale.max.toFixed(1)}, Min ${stats.paroissiale.min.toFixed(1)}, Moyenne ${stats.paroissiale.moyenne.toFixed(2)}\n`;
+                csvContent += `Vicariale: Max ${stats.vicariale.max.toFixed(1)}, Min ${stats.vicariale.min.toFixed(1)}, Moyenne ${stats.vicariale.moyenne.toFixed(2)}\n`;
+                csvContent += `Diocésaine: Max ${stats.diocesaine.max.toFixed(1)}, Min ${stats.diocesaine.min.toFixed(1)}, Moyenne ${stats.diocesaine.moyenne.toFixed(2)}\n\n`;
+            });
+
+            // Créer le lien de téléchargement
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Notes_Lecteurs_Juniors_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('Fichier Excel téléchargé');
+        }
+
+        // ===== FONCTIONS UTILITAIRES =====
+        function formatDate(date) {
+            const d = new Date(date);
+            return d.toLocaleDateString('fr-FR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function showNotification(message, type = 'success') {
+            // Créer la notification
+            const notification = document.createElement('div');
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            // Styles
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'error' ? '#f72585' : '#4cc9f0'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                z-index: 3000;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Supprimer après 3 secondes
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Redimensionnement automatique
+        window.addEventListener('resize', function() {
+            calculateGlobalStats();
+        });
+    </script>
+</body>
+</html>
